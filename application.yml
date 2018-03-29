@@ -3,6 +3,11 @@ jasypt:
   encryptor:
     password: lengleng
 
+server:
+  tomcat:
+    max-threads: 500 # Maximum amount of worker threads.
+    min-spare-threads: 50 # Minimum amount of worker threads
+
 spring:
   redis:
     remote: true        #cachecloud 获取
@@ -19,6 +24,9 @@ cache:
     expiration: 3601
 
 ribbon:
+  eager-load:
+    enabled: true
+    clients: pig-auth,pig-upms-service
   Httpclient:
     enable: false
   OkHttp:
@@ -40,6 +48,11 @@ feign:
         readTimeout: 30000  
 
 hystrix:
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
   command:
     default:
       execution:

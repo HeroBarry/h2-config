@@ -6,7 +6,7 @@ spring:
     host: 192.168.0.111
     port: 5672
     username: pig
-    password: ENC(gc16brBHPNq27HsjaULgKGq00Rz6ZUji)
+    password: lengleng
   zipkin:
     rabbitmq:
       queue: zipkin
@@ -15,6 +15,10 @@ spring:
       percentage: 1.0
 
 zuul:
+  ribbon:
+    eager-load:
+      enabled: true
+      clients: pig-auth,pig-upms-service
   ignoredServices: '*'
   host:
     connect-timeout-millis: 30000
@@ -43,14 +47,18 @@ zuul:
 
 security:
   validate:
-    code: true
+    code: false
   sessions: stateless
   oauth2:
+    client:
+      client-id: pig
+      client-secret: pig
     resource:
       loadBalanced: true
-      user-info-uri: http://pig-auth/user
-      prefer-token-info: false
+      token-info-uri: ${security.auth.server}/oauth/check-token
       service-id: pig-gateway
+      jwt:
+         key-uri: ${security.auth.server}/oauth/token_key #解析jwt令牌所需要密钥的地址
 
 urls:
   anon:
