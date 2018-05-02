@@ -10,17 +10,22 @@ server:
 
 spring:
   redis:
-    remote: true        #cachecloud 获取
+    remote: false        #cachecloud 获取
     host: 127.0.0.1
     port: 6381
     password:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5682
+    username: pig
+    password: lengleng
   http:
     multipart:
       max-file-size: 1000MB
       max-request-size: 1000MB
 
-cache:
-  redis:
+redis:
+  cache:
     expiration: 3601
 
 ribbon:
@@ -28,9 +33,9 @@ ribbon:
     enabled: true
     clients: pig-auth,pig-upms-service
   Httpclient:
-    enable: false
+    enabled: false
   OkHttp:
-    enable: true
+    enabled: true
   ReadTimeout: 30000
   ConnectTimeout: 30000
 
@@ -38,14 +43,19 @@ feign:
   hystrix:
     enabled: true
   okhttp:
-    enable: true
+    enabled: true
   httpclient:
-    enable: false
+    enabled: false
   client:
     config:
       feignName:
         connectTimeout: 30000
-        readTimeout: 30000  
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
 
 hystrix:
   threadpool:
@@ -59,7 +69,7 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 60000
-    
+
 #监控短点配置
 management:
   security:
